@@ -1,8 +1,9 @@
-% clc 
-% clear
-figure(1);
 
-for i = 1:size(msgs)
-    plot(msgs{i}, 'MaximumRange', 10);
-    pause(0.02);
+figure(1);
+for i = 1:10:size(msgs)
+    clusters = scanCluster(msgs{i});
+    plotClusters(clusters, msg);
+    [a, num] = size(clusters);
+    [i, "/", size(msgs), num]
+    drawnow;
 end
