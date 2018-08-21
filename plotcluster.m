@@ -1,5 +1,5 @@
-function plotClusters(clusters, msg)
-%PLOTCLUSTERSSIMPLE Summary of this function goes here
+function plotcluster(clusters, msg)
+%PLOTCLUSTER Summary of this function goes here
 %   Detailed explanation goes here
 max_range = max(msg.Ranges);
 ranges_default(1:1081, 1) = max_range;
