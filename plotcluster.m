@@ -1,16 +1,19 @@
-function plotcluster(clusters, msg)
+function plotcluster(clusters, isObj)
 %PLOTCLUSTER Summary of this function goes here
 %   Detailed explanation goes here
-max_range = max(msg.Ranges);
-ranges_default(1:1081, 1) = max_range;
-msg_base = msg.copy;
-msg_base.Ranges = ranges_default;
 [a, num] = size(clusters);
 
 for i = 2:num
-    plot(clusters(i), 'MaximumRange', 10);
+    line = plot(clusters(i), 'MaximumRange', 10);
+    disp(i);
+    if isObj(i)
+        line.Color = 'r';
+    else
+        line.Color = 'b';
+    end
     hold on;
 end
+disp('end');
 hold off;
 end
 
