@@ -4,7 +4,6 @@ end
 for i=1:10:1000
     msg = msgs{i};
 	msg.Ranges(msg.Ranges > 10) = NaN;
-
     houghAccumulator = zeros(180, 2000, 'uint8');
     theta = -1/4*pi:3/2*pi/1080:5/4*pi;
     x = msg.Ranges .* cos(theta)'*100;
@@ -21,9 +20,9 @@ for i=1:10:1000
     for th=1:180
         for r=1:2000
             houghAccumulator(th,r) = sum(d(:,th) == r);
-            if (houghAccumulator(th,r) > maxSum && not(r==1000))
+            if (houghAccumulator(th,r) > maxSum)
                 maxSum = houghAccumulator(th,r);
-                A = [th, r-1000, maxSum];
+                A = [th, int32(r)-1000, maxSum];
             end
         end
     end
@@ -35,5 +34,4 @@ for i=1:10:1000
     axis([-1000, 1000, -1000, 2000]);
     hold off;
     drawnow;
-    A
 end
