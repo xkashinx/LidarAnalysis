@@ -1,13 +1,13 @@
 if not(exist('msgs', 'Var'))
-    msgs = loaddata('large1.bag');
+    msgs = loaddata('lidar-camera.bag');
 end
 for i=1:10:1000
-    msg = msgs{i};
+    msg = msgs{i}.copy;
 	msg.Ranges(msg.Ranges > 10) = NaN;
     houghAccumulator = zeros(180, 2000, 'uint8');
-    theta = -1/4*pi:3/2*pi/1080:5/4*pi;
-    x = msg.Ranges .* cos(theta)'*100;
-    y = msg.Ranges .* sin(theta)'*100;
+    theta = 0:pi/720:pi;
+    x = msg.Ranges(180:900) .* cos(theta)'*100;
+    y = msg.Ranges(180:900) .* sin(theta)'*100;
 
     scatter(x, y, '.');
     grid on;
