@@ -5,10 +5,13 @@ for i=1:10:size(msgs)
     msg = msgs{i}.copy;
 	msg.Ranges(msg.Ranges > 10) = NaN;
     houghAccumulator = zeros(180, 2000, 'uint8');
+    
+    % calculate scan in cartesian coordinates
     theta = 0:pi/720:pi;
     x = msg.Ranges(180:900) .* cos(theta)'*100;
     y = msg.Ranges(180:900) .* sin(theta)'*100;
 
+    % plot original lidar scan
     subplot(1,2,1);
     scatter(x, y, '.');
     grid on;
@@ -17,6 +20,8 @@ for i=1:10:size(msgs)
 
     th = 0:1:179;
     d = round(x.*cos(pi.*th/180) + y.*(pi.*th/180))+1000;
+    
+    % obtain houghAccumulator matrix and hough transform lines
     rightMax = 0;
     leftMax = 0;
     horizonMax = 0;
@@ -39,6 +44,8 @@ for i=1:10:size(msgs)
             end
         end
     end
+    
+    % calculate line in cartesian and plot
     xHough = linspace(-500,500,1001);
     th = double(A(:,1))/180;
     r = double(A(:,2));
