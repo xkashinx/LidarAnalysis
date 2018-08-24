@@ -1,7 +1,7 @@
 if not(exist('msgs', 'Var'))
     msgs = loaddata('lidar-camera.bag');
 end
-for i=1:10:1000
+for i=1:10:size(msgs)
     msg = msgs{i}.copy;
 	msg.Ranges(msg.Ranges > 10) = NaN;
     houghAccumulator = zeros(180, 2000, 'uint8');
@@ -19,7 +19,12 @@ for i=1:10:1000
     maxSum = 0;
     for th=1:180
         for r=1:2000
-            houghAccumulator(th,r) = sum(d(:,th) == r);
+            % houghAccumulator(th,r) = sum(d(:,th) == r);
+            for theta=1:721
+                if d(theta, th) == r
+                    houghAccumulator(th, r) = houghAccumulator(th, r) + 1;
+                end
+            end
             if (houghAccumulator(th,r) > maxSum)
                 maxSum = houghAccumulator(th,r);
                 A = [th, int32(r)-1000, maxSum];
@@ -31,7 +36,7 @@ for i=1:10:1000
     r = double(A(2));
     yHough = (r-xHough*cos(th))/sin(th);
     scatter(xHough, yHough, '.');
-    axis([-1000, 1000, -1000, 2000]);
+    axis([-1000, 1000, 0, 2000]);
     hold off;
     drawnow;
 end
