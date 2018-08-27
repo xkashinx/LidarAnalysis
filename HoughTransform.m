@@ -1,8 +1,17 @@
+isSim = 1;
 if not(exist('msgs', 'Var'))
-    msgs = loaddata('lidar-camera.bag');
+    if isSim
+        msgs = loaddata('lidar-straight-sim.bag', '/catvehicle/front_laser_points');
+    else
+        msgs = loaddata('lidar-camera.bag', '/scan');
+    end
 end
 for i=1:10:size(msgs)
+    % read 1 iteration of scan
     msg = msgs{i}.copy;
+    if isSim
+        msg.Ranges = msg.Ranges./7;
+    end
 	msg.Ranges(msg.Ranges > 10) = NaN;
     houghAccumulator = zeros(180, 2000, 'uint8');
     
